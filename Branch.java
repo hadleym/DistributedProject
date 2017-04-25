@@ -11,6 +11,7 @@ public class Branch implements Runnable {
 	}	
 
 	public void run() {
+		System.out.println("Starting Branch...\n");
 		try { 
 			ServerSocket listener = new ServerSocket(9090);
 			try{
