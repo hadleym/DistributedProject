@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.HashMap;
 import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 
 
 public class Branch implements Runnable {
@@ -37,6 +38,22 @@ public class Branch implements Runnable {
 			e.printStackTrace();
 		}
 	}
+
+	public void sendTransaction(Transaction trans, Socket socket) throws IOException  {
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		System.out.println("ATM Sending transaction of type " + trans.getAction());
+		out.writeObject(trans);
+		System.out.println("ATM, transaction sent.");
+	}
+
+	public Transaction recvTransaction(Socket socket) throws IOException, ClassNotFoundException{
+		System.out.println("ATM receiving transation...");
+		ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+		Transaction trans = (Transaction) input.readObject();
+		System.out.println("ATM received transaction");
+		return trans;
+	}
+	
 	private void	 initLedger(){
 		ledger = new HashMap<>();
 	}	
