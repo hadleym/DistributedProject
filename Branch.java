@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.HashMap;
+import java.io.ObjectOutputStream;
 
 
 public class Branch implements Runnable {
@@ -14,15 +15,17 @@ public class Branch implements Runnable {
 	}	
 
 	public void run() {
+		System.out.println("Starting Branch...\n");
 		try { 
 			ServerSocket listener = new ServerSocket(9090);
 			try{
 				while(true){
 					Socket socket = listener.accept();
 					try { 
-						PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+						ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+//						PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 						System.out.println("Sending response...");
-						out.println(new Date().toString());
+						out.writeObject(new Date().toString());
 					} finally { 
 						socket.close();
 					}
