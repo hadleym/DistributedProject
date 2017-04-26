@@ -3,11 +3,14 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.util.HashMap;
 
 
 public class Branch implements Runnable {
+	private HashMap<Integer, Account> ledger;
 	
-	public Branch() {
+	public void Branch() {
+		initLedger();
 	}	
 
 	public void run() {
@@ -31,5 +34,8 @@ public class Branch implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	private void	 initLedger(){
+		ledger = new HashMap<>();
+	}	
 }
 

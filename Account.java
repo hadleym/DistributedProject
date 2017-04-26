@@ -9,12 +9,27 @@ class Account{
 		this.balance = balance;
 	}		
 
-	public int withdraw(int amount){
-		if (amount >= balance){
-			balance -= amount;
-			return amount;
-		} else {
-			return -1;
-		}
+	public String getName(){
+		return name;
+	}
+
+	public void setName(String n){
+		name = name;
+	}
+	
+	public void setId(int i){
+		id = i;
+	}
+	
+	public int getId(){
+		return id;
+	}
+	
+	public void setBalance(double a){
+		balance = a;
+	}
+
+	public double getBalance(){
+		return balance;
 	}
 }
