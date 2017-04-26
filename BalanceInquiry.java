@@ -1,4 +1,6 @@
-class BalanceInquiry implements Transaction {
+import java.io.Serializable;
+class BalanceInquiry implements Transaction, Serializable {
+	private static final long serialVersionUID = 0L;
 	int id;
 	Action action;
 	double amount;
