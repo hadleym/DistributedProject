@@ -42,6 +42,10 @@ class ATM implements Runnable {
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 			trans = (Transaction) input.readObject();
 			System.out.println("ATM received transaction");
+			if ( trans.getAction() == Action.BALANCE_INQUIRY ) {
+				BalanceInquiry bi = (BalanceInquiry) trans;
+				System.out.println("Balance: " + bi.getAmount());
+			}
 		} catch (ClassNotFoundException e){
 			e.printStackTrace();
 		}
