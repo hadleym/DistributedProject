@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.BufferedReader;
@@ -6,22 +7,31 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 class ATM implements Runnable {
-	String serverAddress;
-	public ATM () {
+	ObjectInputStream input = null; 
+	ObjectOutputStream out = null; 
+	String branchAddress;
+	int id;
+	public ATM (int i, String addr) {
+		id = i;
+		branchAddress = addr;
 	}
 	public void run(){
 				
 		try { 
 
-			Socket socket = new Socket("127.0.0.1", 9090);
+			Scanner s = new Scanner(System.in);	
+			Socket socket = new Socket(branchAddress,  9090);
 			System.out.println("socket created");
-//			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-//			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-			Transaction bi = new BalanceInquiry(1);
-			System.out.println("Sending transaction");
-			sendTransaction(bi, socket);
-			recvTransaction(socket);
-			System.exit(0);
+			while(true){	
+				System.out.println("Welcome to " + this);
+				System.out.println("Enter id: ");
+				int userId = Integer.parseInt(s.nextLine());
+				Transaction bi = new BalanceInquiry(userId);
+				System.out.println("Sending transaction");
+				sendTransaction(bi, socket);
+				recvTransaction(socket);
+			}
+			
 		} catch (IOException ie){
 			ie.printStackTrace();
 		}
@@ -29,19 +39,23 @@ class ATM implements Runnable {
 	}
 	
 	public void sendTransaction(Transaction trans, Socket socket) throws IOException  {
-		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-		System.out.println("ATM Sending transaction of type " + trans.getAction());
+		if ( out == null ){
+			out = new ObjectOutputStream(socket.getOutputStream());
+		}
+		System.out.println( this + " Sending transaction of type " + trans.getAction());
 		out.writeObject(trans);
-		System.out.println("ATM, transaction sent.");
+		System.out.println( this + " transaction sent.");
 	}
 
 	public Transaction recvTransaction(Socket socket) throws IOException {
-		System.out.println("ATM receiving transation...");
+		System.out.println( this + " receiving transation...");
 		Transaction trans = null;
 		try { 
-			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+			if ( input == null ){
+				input = new ObjectInputStream(socket.getInputStream());
+			}
 			trans = (Transaction) input.readObject();
-			System.out.println("ATM received transaction");
+			System.out.println( this + " received transaction");
 			if ( trans.getAction() == Action.BALANCE_INQUIRY ) {
 				BalanceInquiry bi = (BalanceInquiry) trans;
 				System.out.println("Balance: " + bi.getAmount());
@@ -52,4 +66,7 @@ class ATM implements Runnable {
 		return trans;
 	}
 
+	public String toString(){
+		return "[[ ATM " + id + " ]] ";
+	}
 }

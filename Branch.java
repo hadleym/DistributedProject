@@ -8,28 +8,32 @@ import java.io.ObjectInputStream;
 
 
 public class Branch implements Runnable {
+	ObjectOutputStream out = null;
+	ObjectInputStream input = null;
+	Socket socket = null;	
 	Ledger ledger;
+	int id;
 	
-	public Branch() {
-		ledger = new Ledger(100);
-		System.out.println("Adding account.. in init");
-		ledger.addAccount(new Account("John Doe", 1, 100.00));
+	public Branch(int id, Ledger l) {
+		this.id = id;
+		ledger = l;
 	}	
 
 	public void run() {
-		System.out.println("Starting Branch...\n");
+		System.out.println(this + "starting...");
 		try { 
 			ServerSocket listener = new ServerSocket(9090);
 			try{
 				while(true){
-					Socket socket = listener.accept();
+					if ( socket == null){
+						socket = listener.accept();
+					}
 					try { 
 						Transaction trans = recvTransaction(socket);
 						// DO STUFF
 						handleBalanceInquiry((BalanceInquiry)trans);
 						sendTransaction(trans, socket);
-						System.out.println("Sending response...");
-						//out.writeObject(new Date().toString());
+						System.out.println(this + "Sending response...");
 					} finally { 
 //						socket.close();
 					}
@@ -51,21 +55,30 @@ public class Branch implements Runnable {
 			amount = account.getBalance();
 		}
 		bi.setAmount(amount);
+		System.out.println(this + " for customer id: + " + id );
 	}
 			
 	public void sendTransaction(Transaction trans, Socket socket) throws IOException  {
-		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-		System.out.println("[Branch] Sending transaction of type " + trans.getAction());
+		if ( out == null ){
+			out = new ObjectOutputStream(socket.getOutputStream());
+		}
+		System.out.println(this + " Sending transaction of type " + trans.getAction());
 		out.writeObject(trans);
-		System.out.println("[Branch] transaction sent.");
+		System.out.println(this + " transaction sent.");
 	}
 
 	public Transaction recvTransaction(Socket socket) throws IOException, ClassNotFoundException{
-		System.out.println("[Branch] receiving transation...");
-		ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+		System.out.println( this + " receiving transation...");
+		if (input == null){
+			input = new ObjectInputStream(socket.getInputStream());
+		}
 		Transaction trans = (Transaction) input.readObject();
-		System.out.println("[Branch] received transaction");
+		System.out.println(this + " received transaction");
 		return trans;
+	}
+
+	public String toString(){
+		return "[[ Branch " + id + " ]] ";
 	}
 	
 }
