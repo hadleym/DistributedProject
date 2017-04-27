@@ -9,10 +9,10 @@ import java.io.ObjectInputStream;
 
 
 public class Branch implements Runnable {
-	private HashMap<Integer, Account> ledger;
+	Ledger ledger;
 	
 	public void Branch() {
-		initLedger();
+		ledger = new Ledger(100);
 	}	
 
 	public void run() {
@@ -23,18 +23,22 @@ public class Branch implements Runnable {
 				while(true){
 					Socket socket = listener.accept();
 					try { 
-						ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-//						PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+						Transaction trans = recvTransaction(socket);
+						// DO STUFF
+						
+						sendTransaction(socket);
 						System.out.println("Sending response...");
-						out.writeObject(new Date().toString());
+						//out.writeObject(new Date().toString());
 					} finally { 
-						socket.close();
+//						socket.close();
 					}
 				}
 			} finally {
 				listener.close();
 			}
 		} catch (IOException e){
+			e.printStackTrace();
+		} catch (ClassNotFoundException e){
 			e.printStackTrace();
 		}
 	}
@@ -54,8 +58,5 @@ public class Branch implements Runnable {
 		return trans;
 	}
 	
-	private void	 initLedger(){
-		ledger = new HashMap<>();
-	}	
 }
 
