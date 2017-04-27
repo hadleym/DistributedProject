@@ -1,3 +1,4 @@
+import java.io.IOException;
 class Withdraw implements Transaction{
 	Account account;
 	double amount;
@@ -18,5 +19,15 @@ class Withdraw implements Transaction{
 		} else {
 			return Status.FAILURE;
 		}
+	}
+
+	private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+		stream.writeObject(account);
+		stream.writeDouble(amount);
+	}
+	
+	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		account = (Account) stream.readObject();
+		amount = (double) stream.readObject();
 	}
 }
