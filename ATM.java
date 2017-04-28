@@ -16,9 +16,7 @@ class ATM implements Runnable {
 		branchAddress = addr;
 	}
 	public void run(){
-				
 		try { 
-
 			Scanner s = new Scanner(System.in);	
 			Socket socket = new Socket(branchAddress,  9090);
 			System.out.println("socket created");
