@@ -22,12 +22,13 @@ class ATM implements Runnable {
 			System.out.println("socket created");
 			while(true){	
 				System.out.println("Welcome to " + this);
-				System.out.println("Enter id: ");
-				int userId = Integer.parseInt(s.nextLine());
-				Transaction bi = new BalanceInquiry(userId);
-				System.out.println("Sending transaction");
-				sendTransaction(bi, socket);
-				recvTransaction(socket);
+				System.out.print("Enter command: ");
+				String st = s.nextLine();
+				Transaction t = new Command(st).getTransaction();
+				System.out.println("Sending transaction "+ t);
+				sendTransaction(t, socket);
+				t = recvTransaction(socket);
+				System.out.println("Response from Branch Received... " + t);
 			}
 			
 		} catch (IOException ie){
@@ -54,10 +55,6 @@ class ATM implements Runnable {
 			}
 			trans = (Transaction) input.readObject();
 			System.out.println( this + " received transaction");
-			if ( trans.getAction() == Action.BALANCE_INQUIRY ) {
-				BalanceInquiry bi = (BalanceInquiry) trans;
-				System.out.println("Balance: " + bi.getAmount());
-			}
 		} catch (ClassNotFoundException e){
 			e.printStackTrace();
 		}

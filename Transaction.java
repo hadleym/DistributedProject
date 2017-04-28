@@ -1,5 +1,6 @@
 public interface Transaction {
 	public Action getAction();
-	public Status perform();
+	public void setStatus(Status s);
+	public Status getStatus();
 }
 		
