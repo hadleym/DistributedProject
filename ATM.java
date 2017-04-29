@@ -23,8 +23,13 @@ class ATM implements Runnable {
 			while(true){	
 				System.out.println("Welcome to " + this);
 				System.out.print("Enter command: ");
-				String st = s.nextLine();
-				Transaction t = new Command(st).getTransaction();
+				Command c = new Command(s.nextLine());
+				while ( !c.isValid()){
+					System.out.println("Command not valid...");
+					System.out.print("Enter command: ");
+					c = new Command(s.nextLine());
+				}
+				Transaction t =  c.getTransaction();
 				System.out.println("Sending transaction "+ t);
 				sendTransaction(t, socket);
 				t = recvTransaction(socket);

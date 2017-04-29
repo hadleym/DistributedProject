@@ -9,8 +9,11 @@ class BranchConnection extends Thread{
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private boolean disconnect = false;
+	private Branch branch;
+	private BranchTransactionHandler transactionHandler;
 
-	public BranchConnection(Socket s){
+	public BranchConnection(Socket s, BranchTransactionHandler b){
+		transactionHandler = b;
 		socket = s;
 	}
 	
@@ -23,8 +26,9 @@ class BranchConnection extends Thread{
 			while(!disconnect){
 				System.out.println("Reading transaction...");
 				Transaction trans = readTransaction();	
+				trans = transactionHandler.handleTransaction(trans);
 				System.out.println("Tranaction read...");
-				out.writeObject(handleTransaction(trans));
+				out.writeObject((trans));
 			}
 			disconnect();
 		} catch (IOException e){
@@ -32,16 +36,6 @@ class BranchConnection extends Thread{
 		}
 	}
 	
-	private Transaction handleTransaction(Transaction trans){
-		if (trans.getAction() == Action.BALANCE_INQUIRY){
-			BalanceInquiry bi = (BalanceInquiry) trans;
-			System.out.println("handling balance inquiry");
-			bi.setAmount(200.01);
-			bi.setStatus(Status.SUCCESS);
-		}
-		return trans;
-	}
-
 	private void disconnect(){
 		try {
 			in.close();
