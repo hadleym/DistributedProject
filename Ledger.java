@@ -20,5 +20,15 @@ class Ledger {
 		System.out.println("Adding account\tid: " + n.getId() + "\tName: " + n.getName() + "\tAmount: $" + n.getBalance());
 		map.put(n.getId(), n);
 	}
+
+	@Override
+	public String toString(){
+		String s = new String();
+		for ( int i : map.keySet()){
+			s += map.get(i) + "\n";
+		}
+		return s;
+	}
+			
 }
 	

@@ -1,15 +1,28 @@
 import java.io.IOException;
-class Withdraw implements Transaction{
-	Account account;
+import java.io.Serializable;
+class Withdraw implements Transaction, Serializable {
+//	Account account;
 	double amount;
 	Status status;
+	int id;
 	
-	public Withdraw(Account a, double amt){
-		account = a;
+	public Withdraw(int i, double amt){
+		id = i;
 		amount = amt;
-		status = null;
+		status = Status.FAILURE;
 	}
 	
+	public int getId(){
+		return id;
+	}
+
+	public double getAmount(){
+		return amount;
+	}
+	
+	public void setAmount(double a){
+		amount = a;
+	}
 	@Override
 	public Status getStatus(){
 		return status;
@@ -25,14 +38,20 @@ class Withdraw implements Transaction{
 	}
 	
 	private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-		stream.writeObject(account);
-		stream.writeDouble(amount);
+		stream.writeInt(id);
+		stream.writeObject((Double) amount);
 		stream.writeObject(status);
 	}
 	
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		account = (Account) stream.readObject();
-		amount = (double) stream.readObject();
+		id = stream.readInt();
+		amount = (Double) stream.readObject();
 		status = (Status) stream.readObject();
 	}
+	
+	@Override
+	public String toString(){
+		return "WITHDRAW \t ID: " + id + "\t AMOUNT: " + amount + "\t STATUS: " + status;
+	}
 }
+

@@ -32,4 +32,23 @@ class Account{
 	public double getBalance(){
 		return balance;
 	}
+
+	public boolean withdraw(double amt){
+		if ( balance >= amt ){
+			balance -=amt;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean deposit(double amt){
+		balance += amt;
+		return true;
+	}
+	
+	@Override
+	public String toString(){
+		return "NAME: " + name + "\t ID: " + id + "\t BALANCE: " + balance;
+	}
 }
