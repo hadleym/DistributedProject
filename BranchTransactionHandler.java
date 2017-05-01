@@ -53,6 +53,7 @@ class BranchTransactionHandler {
 			t.setStatus(Status.FAILURE);
         }
         return t;
+
 	}
 
 
@@ -93,6 +94,7 @@ class BranchTransactionHandler {
 		c.setStatus(Status.SUCCESS);
 		return c;
 	}
+
 
 	private Transaction handleAnotherServerTransaction(Transaction t, String addr, int port){
 	    try {
