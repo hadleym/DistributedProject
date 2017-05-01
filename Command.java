@@ -25,16 +25,18 @@ class Command{
 				valid = false;
 				trans = null;
 			}
-		} else if (( c == 'd' || c == 'D' ) && split.length == 3){
-			try {
-				int id = Integer.parseInt(split[1]);
-				double amt = Double.parseDouble(split[2]);
-				trans = new Deposit(id, amt);
-			} catch ( NumberFormatException e) {
-				System.out.println(depositSyntax());
-				valid = false;
-				trans = null;
-			}
+		} else if (( c == 'd' || c == 'D' ) && split.length == 3) {
+            try {
+                int id = Integer.parseInt(split[1]);
+                double amt = Double.parseDouble(split[2]);
+                trans = new Deposit(id, amt);
+            } catch (NumberFormatException e) {
+                System.out.println(depositSyntax());
+                valid = false;
+                trans = null;
+            }
+        } else if (( c == 'c') || c == 'C') {
+		    trans = new CloseTransaction();
 		} else {
 			printAllSyntax();
 			valid = false;

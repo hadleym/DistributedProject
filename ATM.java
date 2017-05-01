@@ -36,13 +36,16 @@ class ATM implements Runnable {
 				sendTransaction(t, socket);
 				t = recvTransaction(socket);
 				System.out.println("Response from Branch Received... " + t);
+				if ( t instanceof CloseTransaction){
+				    break;
+                }
 				System.out.println(t);
 			}
 			
 		} catch (IOException ie){
 			ie.printStackTrace();
 		}
-
+        System.out.println(this + " is shutting down...");
 	}
 	
 	public void sendTransaction(Transaction trans, Socket socket) throws IOException  {
