@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class TestBranchTransactionHandler {
 	public static void main(String[] args){
 		Ledger ledger = new Ledger(10);
@@ -6,8 +8,10 @@ class TestBranchTransactionHandler {
 		System.out.println();
 		System.out.println();
 		System.out.println("TESTING BranchTransactionHandler *****");
-		BranchTransactionHandler handler = new BranchTransactionHandler(ledger);		
-		System.out.println("Testing withdraw");	
+		ArrayList<ServerInfo> serverInfoList = new ArrayList<>();
+
+		BranchTransactionHandler handler = new BranchTransactionHandler(ledger, serverInfoList, new ServerInfo("127.0.0.1", 90000));
+		System.out.println("Testing withdraw");
 		Withdraw w = new Withdraw(333, 50.02);
 		Transaction t = handler.handleTransaction(w);	
 		System.out.println(t);
