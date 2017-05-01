@@ -29,6 +29,9 @@ class BranchConnection extends Thread{
 				trans = transactionHandler.handleTransaction(trans);
 				System.out.println("Tranaction read...");
 				out.writeObject((trans));
+				if (trans instanceof CloseTransaction){
+					break;
+				}
 			}
 			disconnect();
 		} catch (IOException e){

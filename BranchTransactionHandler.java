@@ -11,15 +11,19 @@ class BranchTransactionHandler {
 			} else if ( t.getAction() == Action.WITHDRAW ){
 				return handleWithdraw((Withdraw) t, a);
 			} else if ( t.getAction() == Action.DEPOSIT ) {
-				return handleDeposit((Deposit) t, a);
-			} else {
+                return handleDeposit((Deposit) t, a);
+        } else {
 				System.out.println("This type of transaction cannot be processed by a branch (this error should not appear, please contact administrator.)");
 				t.setStatus(Status.FAILURE);
 				return t;
 			}
-		} else { 
-			System.out.println("Transaction cannot be processed at this branch." + t.getId());
-			t.setStatus(Status.FAILURE);
+		} else {
+            if ( t.getAction() == Action.CLOSE) {
+                return handleCloseTransaction((CloseTransaction) t);
+            } else {
+				System.out.println("Transaction cannot be processed at this branch. " + t.getId());
+			    t.setStatus(Status.FAILURE);
+            }
 		}
 		return t;
 	}
@@ -54,6 +58,11 @@ class BranchTransactionHandler {
 			bi.setStatus(Status.FAILURE);
 		}
 		return bi;
+	}
+
+	private Transaction handleCloseTransaction(CloseTransaction c){
+		c.setStatus(Status.SUCCESS);
+		return c;
 	}
 }
 	
