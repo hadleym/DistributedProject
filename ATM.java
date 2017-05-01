@@ -11,14 +11,16 @@ class ATM implements Runnable {
 	ObjectOutputStream out = null; 
 	String branchAddress;
 	int id;
-	public ATM (int i, String addr) {
+	int port;
+	public ATM (int i, String addr, int p) {
 		id = i;
+		port = p;
 		branchAddress = addr;
 	}
 	public void run(){
 		try { 
 			Scanner s = new Scanner(System.in);	
-			Socket socket = new Socket(branchAddress,  9090);
+			Socket socket = new Socket(branchAddress, port);
 			System.out.println("socket created");
 			while(true){	
 				System.out.println("Welcome to " + this);
