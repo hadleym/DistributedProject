@@ -9,31 +9,31 @@ class Account{
 		this.balance = balance;
 	}		
 
-	public String getName(){
+	public synchronized String getName(){
 		return name;
 	}
 
-	public void setName(String n){
+	public synchronized void setName(String n){
 		name = name;
 	}
 	
-	public void setId(int i){
+	public synchronized void setId(int i){
 		id = i;
 	}
 	
-	public int getId(){
+	public synchronized int getId(){
 		return id;
 	}
 	
-	public void setBalance(double a){
+	public synchronized void setBalance(double a){
 		balance = a;
 	}
 
-	public double getBalance(){
+	public synchronized double getBalance(){
 		return balance;
 	}
 
-	public boolean withdraw(double amt){
+	public synchronized boolean withdraw(double amt){
 		if ( balance >= amt ){
 			balance -=amt;
 			return true;
@@ -42,7 +42,7 @@ class Account{
 		}
 	}
 
-	public boolean deposit(double amt){
+	public synchronized boolean deposit(double amt){
 		balance += amt;
 		return true;
 	}
