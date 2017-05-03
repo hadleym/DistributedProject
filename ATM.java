@@ -35,7 +35,7 @@ class ATM implements Runnable {
 				System.out.println("Sending transaction "+ t);
 				sendTransaction(t, socket);
 				t = recvTransaction(socket);
-				System.out.println("Response from Branch Received... " + t);
+				System.out.println("Response from Branch Received... " + t.getStatus());
 				if ( t instanceof CloseTransaction){
 				    break;
                 }
