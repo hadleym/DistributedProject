@@ -1,7 +1,8 @@
 TARGET = branch transaction account enums
 CC = javac
 
-all: $(TARGET)
+all: 
+	javac *.java
 
 branch: Branch.java transaction
 	$(CC) Branch.java
