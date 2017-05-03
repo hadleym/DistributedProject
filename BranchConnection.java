@@ -24,12 +24,12 @@ class BranchConnection extends Thread{
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
 			while(!disconnect){
-				System.out.println("Reading transaction...");
+				System.out.print("Reading transaction...");
 				Transaction trans = readTransaction();	
 				trans = transactionHandler.handleTransaction(trans);
 				System.out.println("Tranaction read...");
 				out.writeObject((trans));
-				if (trans instanceof CloseTransaction){
+				if (trans instanceof CloseTransaction || trans instanceof ServerListRequest){
 					break;
 				}
 			}
@@ -53,6 +53,7 @@ class BranchConnection extends Thread{
 		Transaction trans = null;
 		try { 
 			trans = (Transaction) in.readObject();
+			System.out.println("Transaction of type " + trans.getAction() + " received.");
 		} catch (ClassNotFoundException e){
 			e.printStackTrace();
 		} catch (IOException e){

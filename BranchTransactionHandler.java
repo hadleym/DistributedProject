@@ -32,6 +32,8 @@ class BranchTransactionHandler {
             } else if ( t.getAction() == Action.SERVER_REQUEST){
                 return handleServerRequest((ServerListRequest) t);
 
+			} else if ( t.getAction() == Action.SERVER_ADD){
+				return handleAddBranch((AddBranchTransaction) t, serverInfoList);
             } else if (( t.getStatus() != Status.FORWARDED ) && (( t instanceof Withdraw ) || (t instanceof BalanceInquiry ) || (t instanceof Deposit))){
 				t.setStatus(Status.FORWARDED);	// set Id to 1, so that it will not 
 												// be forwarded through infinitely.
@@ -57,6 +59,12 @@ class BranchTransactionHandler {
 
 	}
 
+	private Transaction handleAddBranch(AddBranchTransaction b, ArrayList<ServerInfo> list){
+		list.add(b.getServerInfo());
+		b.setStatus(Status.SUCCESS);
+		return b;
+	}	
+		
 
 
 	private Transaction handleDeposit(Deposit d, Account a){
@@ -120,7 +128,7 @@ class BranchTransactionHandler {
         l.add(myServerInfo);
 	    r.setList(l);
 	    r.setStatus(Status.SUCCESS);
-        serverInfoList.add(r.sourceServerInfo);
+//        serverInfoList.add(r.sourceServerInfo);
 	    return r;
     }
 

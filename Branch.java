@@ -40,9 +40,9 @@ public class Branch {
             System.out.println("List recieved");
             System.out.println("List has size of : " + serverInfoList.size());
             for ( ServerInfo si: serverInfoList){
-                System.out.println(si);
+				System.out.println("Adding this server " + serverInfo + " to " + si + ":");
+				addServerToAnother(serverInfo, si);
             }
-
         }
 
         BranchTransactionHandler transactionHandler = new BranchTransactionHandler(ledger, serverInfoList, serverInfo);
@@ -91,6 +91,17 @@ public class Branch {
         return r.getList();
 
     }
+	public static void addServerToAnother(ServerInfo source, ServerInfo dest){
+		try {
+			Socket socket = new Socket(dest.address, dest.port);
+			AddBranchTransaction trans = new AddBranchTransaction(source);
+			sendTransaction(trans, socket);
+			Transaction t = recvTransaction(socket);
+		} catch ( IOException e){
+			e.printStackTrace();
+			System.out.println("Could not connect to remote branch " + dest + " to send new Branch Info");
+		}
+	}
 
     public static void sendTransaction(Transaction trans, Socket socket) throws IOException  {
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -111,6 +122,7 @@ public class Branch {
         }
         return trans;
     }
+
 
 
 }
