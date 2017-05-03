@@ -4,15 +4,16 @@ class StartATM{
 	public static void main(String[] args){
 		String addr;
 		int port;
-		if ( args.length > 0 ){
-			addr = args[0];
-			port = Integer.parseInt(args[1]);
-		} else {
-			System.out.println("Using default addr and port");
-			addr = "10.192.144.7";
-			port = 9090;
-		}
-		int id = 1;
+		int id;
+		if ( args.length != 3 ){
+			System.out.println("USAGE: StartATM id addr port");
+			System.out.println("Exiting...");
+			System.exit(1);
+		} 
+		id = Integer.parseInt(args[0]);
+		addr = args[1];
+		port = Integer.parseInt(args[2]);
+	
 		(new Thread(new ATM(id, addr, port))).start();
 	}
 }
