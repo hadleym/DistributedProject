@@ -27,6 +27,8 @@ Commands for the ATM processes:
  deposit id amt -- performs a deposit on the account with id.
  close -- closes the atm and disconnects from the branch.
 
+Please see attached DistributedDiagram.pdf for the diagram.
+
 Branches contain a Ledger, which holds accounts specific to each Branch. Only that particular branch can access its own accounts.  An ATM is set up to communicate through a connection handler to its own branch. Deposit, Withdraws, and Balance Inquiries can be made.
 
 Each Branch has a list of addresses and ports that represent other Branches.  When an additional Branch is created, you can pass in arguments of an already existing branch's ip and port. 
