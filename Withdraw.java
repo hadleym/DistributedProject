@@ -16,6 +16,10 @@ class Withdraw implements Transaction, Serializable {
 		return id;
 	}
 
+	public void setId(int i){
+		id = i;
+	}
+
 	public double getAmount(){
 		return amount;
 	}

@@ -7,10 +7,12 @@ import java.util.ArrayList;
 public class ServerListRequest implements Transaction, Serializable{
     String addr;
     Status status;
+	int id;
     public ServerInfo sourceServerInfo;
     ArrayList<ServerInfo> list;
 
     public ServerListRequest(ArrayList<ServerInfo> l, ServerInfo s){
+		id = 0;
         list = l;
         sourceServerInfo = s;
     }
@@ -22,7 +24,6 @@ public class ServerListRequest implements Transaction, Serializable{
     public ArrayList<ServerInfo> getList(){
         return list;
     }
-
 
 
     @Override

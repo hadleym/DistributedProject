@@ -1,5 +1,4 @@
-import com.sun.security.ntlm.Server;
-
+import java.net.ServerSocket;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,7 +32,9 @@ class BranchTransactionHandler {
             } else if ( t.getAction() == Action.SERVER_REQUEST){
                 return handleServerRequest((ServerListRequest) t);
 
-            } else {
+            } else if (( t.getStatus() != Status.FORWARDED ) && (( t instanceof Withdraw ) || (t instanceof BalanceInquiry ) || (t instanceof Deposit))){
+				t.setStatus(Status.FORWARDED);	// set Id to 1, so that it will not 
+												// be forwarded through infinitely.
                 System.out.println("Processing list to see who to contact");
 
                 System.out.println("DEBUG: serverInfoList details");

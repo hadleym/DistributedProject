@@ -5,9 +5,12 @@ import java.io.Serializable;
  */
 public class CloseTransaction implements Transaction, Serializable {
     Status status;
+	int id;
     public CloseTransaction(){
         status = Status.FAILURE;
+		id = 0;
     }
+
     @Override
     public Action getAction() {
         return Action.CLOSE;
