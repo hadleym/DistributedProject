@@ -24,7 +24,7 @@ class BranchConnection extends Thread{
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
 			while(!disconnect){
-				System.out.print("Reading transaction...");
+				System.out.print("Waiting for transaction...");
 				Transaction trans = readTransaction();	
 				trans = transactionHandler.handleTransaction(trans);
 				System.out.println("Tranaction read...");
