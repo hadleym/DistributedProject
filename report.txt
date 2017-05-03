@@ -3,7 +3,7 @@ CS 422
 Distributed Project
 Bank and ATM example
 5/1/2017
-
+** Please see attached DistributedDiagram.pdf **
 USAGE:
 
 to compile: 
