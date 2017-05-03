@@ -56,7 +56,13 @@ public class Branch {
 		} else if ( id == 2) {
 			ledger.addAccount(new Account("Jerry Seinfeld", 5, 100.0));
 			ledger.addAccount(new Account("George Costanza", 6, 500.00));
+		} else if ( id == 3) {
+			ledger.addAccount(new Account("Alan Turning", 8, 200.0));
+			ledger.addAccount(new Account("Grace Hopper", 9, 500.00));
+			ledger.addAccount(new Account("Ken Thompson", 10, 750.00));
+			ledger.addAccount(new Account("Donald Knuth", 11, 512.00));
 		}
+
 		
 	
 		while(!isDone){
