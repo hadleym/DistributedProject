@@ -3,37 +3,16 @@ CS 422
 Distributed Project
 Bank and ATM example
 5/1/2017
+** Please see attached README.txt for usage information **
 ** Please see attached DistributedDiagram.pdf **
-USAGE:
 
-to compile: 
-$ make all
-
-1) Start a Branch on a machine.
-	- $ java Branch ID1 ADDR1 PORT1
-
-2) Start an ATM for that Branch on another machine
-	- $ java StartATM ID ADDR1 PORT1
-
-3) Start another Branch on another machine
-	- $ java Branch ID2 ADDR2 PORT2 ADDR1 PORT1
-
-4) Start an ATM for the second Branch on another machine
-	- $ java StartATM ID ADDR2 PORT2
-
-Commands for the ATM processes:
- balance id   -- returns the balance of the account with id
- withdraw id amt -- preforms a withdraw on the account with id.
- deposit id amt -- performs a deposit on the account with id.
- close -- closes the atm and disconnects from the branch.
-
-Please see attached DistributedDiagram.pdf for the diagram.
+The idea is that there are multiple branches (servers) of a bank, each with their own Accounts and their own ATMS.  Branches can only handle transactions that deal with their own private accounts, therefore when an ATM on one network requests information about an account on another network, the branch must reach out to the other branches to fulfill the transaction.
 
 Branches contain a Ledger, which holds accounts specific to each Branch. Only that particular branch can access its own accounts.  An ATM is set up to communicate through a connection handler to its own branch. Deposit, Withdraws, and Balance Inquiries can be made.
 
-Each Branch has a list of addresses and ports that represent other Branches.  When an additional Branch is created, you can pass in arguments of an already existing branch's ip and port. 
+Each Branch has a list of addresses and ports that represent other Branches.  When an additional Branch is created, you can pass in arguments of an already existing branch's ip and port. This allows a network of branches (servers) to form. Each branch with its own set of ATMs. 
 
-If this is done, then the new branch will request the previous branch's server list.  The new branch will then copy this server list, add the original branch to the server list, then it will send messages to each branch on the server list to add this newly created branch to ever other branch's server list.  This way all branches get info about any new branches, and it is the responsibility of the new branch to do the communication.
+If the optional arguments are given, then the new branch will request the previous branch's server list.  The new branch will then copy this server list, add the original branch to the server list, then it will send messages to each branch on the server list to add this newly created branch to ever other branch's server list.  This way all branches get info about any new branches, and it is the responsibility of the new branch to do the communication.
 
 This allow many branches to exist and cooperate to complete functions of the atms.
 
@@ -41,3 +20,4 @@ When a user from branch1 attempts to access an ATM for branch2, branch1 recogniz
 
 This allows the network of ATMs to work universally for all created account ids, regardless of which ATM the user uses.
 
+There are default values associated with Branches given the ids of "1", "2" and "3".
